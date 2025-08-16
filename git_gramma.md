@@ -1,4 +1,5 @@
-
+# project01
+gogogo
 
 初始化本地仓库
 git init
@@ -18,3 +19,7 @@ git commit -m ""
 
 添加远程仓库链接
 git remote add origin git@github.com:
+
+推送本地代码
+git push -u origin master:main
+master是本地仓库的命名 后者为远程仓库的分支
