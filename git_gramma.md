@@ -21,5 +21,8 @@ git commit -m ""
 git remote add origin git@github.com:
 
 推送本地代码
-git push -u origin master:main
+git push -u origin main:main
 master是本地仓库的命名 后者为远程仓库的分支
+
+
+

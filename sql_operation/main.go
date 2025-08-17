@@ -15,7 +15,7 @@ type User struct {
 func main() {
 	// 1. 初始化数据库连接
 	// !!! 重要：请将这里的密码替换成你自己的MySQL root密码 !!!
-	database, err := db.NewDatabase("root", "Aa001111", "localhost:3306", "") // 初始连接时不指定数据库
+	_, err := db.InitDatabase("root", "Aa001111", "localhost:3306", "") // 初始连接时不指定数据库
 	if err != nil {
 		log.Fatalf("无法连接到数据库: %v", err)
 	}
