@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
+	"https_operation/auth"
 	"log"
 	"net/http"
 	"sql_operation/db"
@@ -25,17 +27,20 @@ type RegisterResponse struct {
 type LoginRequest struct {
 	UserId   int64  `json:"userid"`
 	PassWord string `json:"password"`
+	Token    string `json:"token,omitempty"`
 }
 
 type LoginResponse struct {
 	UserName string `json:"username,omitempty"`
 	Message  string `json:"message"`
 	Success  bool   `json:"success"`
+	Token    string `json:"token,omitempty"`
 }
 
 type ResetNameRequest struct {
 	UserId  int64  `json:"userid"`
 	NewName string `json:"newname"`
+	Token   string `json:"token,omitempty"`
 }
 
 type ResetNameResponse struct {
@@ -103,6 +108,18 @@ func (h *UserHandler) LoignHTTP(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "请求体格式错误", http.StatusBadRequest)
 	}
+	var ok bool
+	if req.Token != "" {
+		fmt.Println("正在尝试通过Token进行认证")
+		_, err := auth.ValidateToken(req.Token)
+		if err != nil {
+			ok = false
+		} else {
+			ok = true
+		}
+	} else {
+
+	}
 
 	username, ok, err := h.DB.USER_Login(req.UserId, req.PassWord)
 	if err != nil {
@@ -115,11 +132,19 @@ func (h *UserHandler) LoignHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json") // 设置响应头为 JSON
 	var res LoginResponse
 	if ok {
+		tokenString, err := auth.GenerateToken(req.UserId)
+		if err != nil {
+			// 如果 Token 生成失败，这是服务器内部错误
+			log.Printf("为用户 %d 生成 Token 失败: %v", req.UserId, err)
+			http.Error(w, "无法创建认证凭证", http.StatusInternalServerError)
+			return
+		}
 		w.WriteHeader(http.StatusOK)
 		res = LoginResponse{
 			UserName: username,
 			Message:  "登陆认证成功",
 			Success:  true,
+			Token:    tokenString, // 把 Token 放在这里！
 		}
 	} else {
 		w.WriteHeader(http.StatusUnauthorized)
