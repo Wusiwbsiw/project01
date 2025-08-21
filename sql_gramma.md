@@ -73,3 +73,23 @@ ORDER BY created_at ASC;
 聊天记录插入
 "INSERT INTO user_chat_history (sender_id, receiver_id,message_type,content,created_at,is_read) VALUES (?,?,?,?,?,?)"
 
+
+# 实际使用中可能会用到:
+
+CREATE TABLE IF NOT EXISTS user_points (
+    -- 用户 ID，既是主键也是外键
+    user_id INT NOT NULL PRIMARY KEY,
+
+    -- 积分，使用无符号整数，并设置默认值为 0
+    points INT UNSIGNED NOT NULL DEFAULT 0,
+
+    -- 最后更新时间，每次记录更新时自动更新为当前时间
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    -- 设置外键约束，关联到 login 表的 id 字段
+    -- ON DELETE CASCADE 表示如果 login 表中的用户被删除了，他对应的积分记录也会被自动删除
+    CONSTRAINT fk_user
+    FOREIGN KEY (user_id) REFERENCES user_login_check(id)
+    ON DELETE CASCADE
+);
+

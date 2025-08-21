@@ -31,3 +31,10 @@ curl -k -X POST \
   -d '{"userid": 100000, "newpassword": "MyNewSecurePassword!@#"}' \
   https://localhost:8443/api/user/reset-password
 
+# 如何测试并发量？
+
+## 使用基准测试工具 go benchmark
+go语言内置，无需额外安装
+
+## 使用压力测试工具 vegeta (选择原因是对来自签名证书的支持友好)
+通过 go install github.com/tsenart/vegeta/v12@latest 进行安装
