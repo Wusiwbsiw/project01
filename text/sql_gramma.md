@@ -93,3 +93,25 @@ CREATE TABLE IF NOT EXISTS user_points (
     ON DELETE CASCADE
 );
 
+-- 创建 products 表，用于存储秒杀商品信息
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    total_stock INT UNSIGNED NOT NULL, -- 商品总库存
+    description TEXT
+)
+
+-- 创建 orders 表，用于存储秒杀成功的订单
+CREATE TABLE IF NOT EXISTS orders (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    -- 建议添加外键以保证数据完整性
+    FOREIGN KEY (user_id) REFERENCES user_login_check(id),
+    FOREIGN KEY (product_id) REFERENCES products(id),
+    
+    -- 一个用户对一个商品只能下一单，创建联合唯一索引来防止重复下单
+    UNIQUE KEY idx_user_product (user_id, product_id)
+)
