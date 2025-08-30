@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>个人主页</h1>
+    </header>
+    <main>
+        <div class="profile-info">
+            <p>用户 ID: <span id="userId">加载中...</span></p>
+            <p>昵称: <span id="username">加载中...</span></p>
+        </div>
+        <!-- 更多内容，比如用户发布的文章、好友列表等 -->
+    </main>
+    <footer>
+        <p>© 2025 我的项目</p>
+    </footer>
+    <a href="index.html">返回主页</a>
+
+    <script src="/static/main.js"></script> <!-- 我们需要修改 main.js 来处理这个页面 -->
+    <script>
+        // 在这里面编写前端逻辑，用于请求 /api/profile，并更新页面
+    </script>
+</body>
+
+</html>

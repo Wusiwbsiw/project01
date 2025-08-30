@@ -82,6 +82,10 @@ func (d *Database) USER_Login(user_id int64, user_password string) (user_name st
 	}
 }
 
+// func (d* Database) USER_Profile(user_id int64) (user_name string ,err error) {
+
+// }
+
 // func (d *Database) USER_Logout(user_id int64) (ispermitted bool, err error) {
 // 	// 可能用于管理用户状态
 

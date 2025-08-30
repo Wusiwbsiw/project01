@@ -31,16 +31,19 @@ func main() {
 
 	mux := http.NewServeMux()
 	Userheadler := &handlers.UserHandler{DB: database}
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "欢迎来到我们的 HTTPS API 服务器！")
-	})
+
 	mux.HandleFunc("/api/user/register", Userheadler.RegisterHTTP)
 	mux.HandleFunc("/api/user/login", Userheadler.LoignHTTP)
 	mux.HandleFunc("/api/user/reset-name", Userheadler.ResetNameHTTP)
 	mux.HandleFunc("/api/user/reset-password", Userheadler.ResetPasswordHTTP)
+	// mux.HandleFunc("/api/profile", userHandler.ProfileHTTP)
 
 	mux.HandleFunc("/api/seckill/init", seckillHandler.InitSeckillHandler)
 	mux.HandleFunc("/api/seckill/do", seckillHandler.DoSeckillHandler)
+
+	fileServer := http.FileServer(http.Dir("../resources"))
+	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
+	mux.Handle("/", fileServer)
 
 	addr := ":8443" // 监听 8443 端口
 	fmt.Printf("服务器正在启动，监听地址: https://localhost%s\n", addr)

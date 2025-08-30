@@ -58,6 +58,11 @@ type ResetPasswordResponse struct {
 	Success bool   `json:"success"`
 }
 
+type ProfileResponse struct {
+	UserID   int64  `json:"userId"`
+	Username string `json:"username"`
+}
+
 func (h *UserHandler) RegisterHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "仅支持POST方法", http.StatusMethodNotAllowed)
